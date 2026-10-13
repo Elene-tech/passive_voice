@@ -1,0 +1,1056 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}[hidden]{display:none!important}</style><title>Passive Voice Chocolate Lab</title>
+<style>
+/* Layout: dark green lesson header with a lesson clock, sticky tab bar, one scrolling column of exercise cards per block. */
+:root{
+  --bg:#faf6ef; --surface:#ffffff; --ink:#1d2b24; --muted:#5c6b63; --line:#e2dac8;
+  --head:#1B4332; --head-ink:#faf6ef; --primary:#1B4332; --on-primary:#ffffff;
+  --gold:#C9A84C; --orange:#F05A1A; --soft:#f1ebdc; --cocoa:#5a3a28;
+  --ok:#23703f; --ok-bg:#e1f2e6; --bad:#b3321f; --bad-bg:#fbe4df; --hint:#8a6d12;
+  --cs:#c2410c; --cv:#1f6f54; --co:#7a5d0e;
+  --display:Georgia,"Times New Roman",serif; --body:Arial,Calibri,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1c16; --surface:#17281f; --ink:#efeadc; --muted:#a4b2a9; --line:#2a4036;
+  --head:#0a1510; --head-ink:#efeadc; --primary:#C9A84C; --on-primary:#14231b; --soft:#1e3328; --cocoa:#d9b79a;
+  --ok:#7fd49c; --ok-bg:#183a27; --bad:#ff9b88; --bad-bg:#44201a; --hint:#e0c25f;
+  --cs:#ff9a6c; --cv:#7fd49c; --co:#e0c25f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1c16; --surface:#17281f; --ink:#efeadc; --muted:#a4b2a9; --line:#2a4036;
+  --head:#0a1510; --head-ink:#efeadc; --primary:#C9A84C; --on-primary:#14231b; --soft:#1e3328; --cocoa:#d9b79a;
+  --ok:#7fd49c; --ok-bg:#183a27; --bad:#ff9b88; --bad-bg:#44201a; --hint:#e0c25f;
+  --cs:#ff9a6c; --cv:#7fd49c; --co:#e0c25f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.2;margin:0}
+h2{font-size:1.5rem;margin-bottom:.25rem}
+h3{font-size:1.1rem;margin:1.5rem 0 .4rem}
+p{margin:.4rem 0}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:900px;margin:0 auto;padding-inline:16px}
+header{background:var(--head);color:var(--head-ink)}
+header .wrap{padding-block:16px 12px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.eyebrow{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+header h1{font-size:clamp(1.5rem,5vw,2.2rem)}
+header .sub{opacity:.85;font-size:.9rem;margin-top:4px}
+.clock{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.clockT{font-family:var(--display);font-size:1.6rem;font-variant-numeric:tabular-nums;min-width:4.6ch}
+.clockN{font-size:.8rem;color:var(--gold);width:100%}
+.clock button{border:1px solid var(--gold);background:transparent;color:var(--head-ink);padding:5px 12px;border-radius:8px;font-size:.85rem}
+.over{color:#ffb199!important}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:thin}
+nav button{flex:none;border:0;background:transparent;color:var(--muted);padding:8px 12px;border-radius:8px;font-size:.9rem;white-space:nowrap}
+nav button[aria-selected="true"]{background:var(--primary);color:var(--on-primary);font-weight:700}
+nav .mins{opacity:.7;font-size:.78rem;margin-left:4px}
+.prog{font-size:.85rem;color:var(--muted);padding:6px 0}
+main{padding-block:18px 56px}
+.lead{color:var(--muted);margin-bottom:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.stage{min-height:220px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.tag{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hint);font-weight:700}
+.big{font-family:var(--display);font-size:clamp(1.3rem,4.2vw,1.8rem);line-height:1.3;text-wrap:balance}
+.small{font-size:.92rem;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--primary);background:var(--primary);color:var(--on-primary);padding:9px 16px;border-radius:8px;font-weight:700}
+.btn.ghost{background:transparent;color:var(--primary)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.warn{background:var(--orange);border-color:var(--orange);color:#fff}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 12px;border-radius:99px;font-size:.88rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.flip{cursor:pointer;user-select:none}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
+.score{font-weight:700;color:var(--hint)}
+.q{padding:10px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.stem{margin:0 0 6px}
+.gapline{line-height:2.3}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border:1px solid transparent;border-radius:8px;cursor:pointer}
+.opt:hover{background:var(--soft)}
+.opt input{margin-top:5px;accent-color:var(--primary)}
+.opt.ok,.ok-cell{background:var(--ok-bg);border-color:var(--ok)}
+.opt.bad,.bad-cell{background:var(--bad-bg);border-color:var(--bad)}
+.opt.hint{border:1px dashed var(--ok)}
+select,textarea,input[type=text]{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 8px;max-width:100%}
+select{min-width:130px}
+select.ok-cell,select.bad-cell,input.ok-cell,input.bad-cell{border-width:2px}
+input.gapin{width:12ch;margin:0 3px}
+input.wide{width:100%;margin-top:4px}
+textarea{width:100%;resize:vertical}
+.tile{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 11px;font-size:.98rem}
+.tile:hover{border-color:var(--primary)}
+.tile.sel{background:var(--gold);color:#14231b;border-color:var(--gold)}
+.answer{min-height:48px;border:2px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.answer.ok-cell{border-style:solid}.answer.bad-cell{border-style:solid}
+.pool{display:flex;flex-wrap:wrap;gap:6px}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+@media (max-width:640px){.bins{grid-template-columns:1fr}}
+.bin{border:2px dashed var(--line);border-radius:10px;padding:8px;min-height:90px;cursor:pointer}
+.bin h4{margin:0 0 6px;font-size:.88rem;color:var(--muted)}
+.bin .pool{min-height:34px}
+.cline{display:flex;flex-wrap:wrap;align-items:flex-end;gap:2px 0;font-size:1.05rem;margin-bottom:6px}
+.cw{padding:2px 2px}
+.cgap{width:14px;height:28px;border:0;border-bottom:2px solid var(--line);background:transparent;padding:0;color:var(--orange);font-weight:700;font-size:1.2rem;line-height:1}
+.cgap:hover{border-color:var(--primary)}
+.cgap.on{border-color:var(--orange)}
+.cgap.on::after{content:","}
+.spot{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 12px;border-radius:8px;margin:5px 0}
+.spot[aria-pressed="true"]{background:var(--soft);border-color:var(--primary);font-weight:700}
+.spot.ok-cell{background:var(--ok-bg);border-color:var(--ok)}
+.spot.bad-cell{background:var(--bad-bg);border-color:var(--bad)}
+.model{background:var(--ok-bg);border-left:4px solid var(--ok);padding:8px 12px;margin-top:6px;border-radius:0 8px 8px 0}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;background:var(--soft);font-size:.85rem;margin:2px 4px 2px 0}
+.pill.used{background:var(--ok-bg);color:var(--ok);font-weight:700}
+.cs{color:var(--cs);font-weight:700}.cv{color:var(--cv);font-weight:700}.co{color:var(--co);font-weight:700}
+.timer{font-family:var(--display);font-size:1.9rem;font-variant-numeric:tabular-nums;min-width:90px}
+ul.clean{padding-left:1.1rem;margin:.4rem 0}
+ul.clean li{margin:.25rem 0}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface);margin-top:10px}
+summary{cursor:pointer;font-weight:700}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:560px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rule{background:var(--soft);border-radius:10px;padding:12px 14px;margin:8px 0}
+.steps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.steps button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700}
+.steps button[aria-pressed="true"]{background:var(--cocoa);border-color:var(--cocoa);color:var(--bg)}
+.chk label{display:flex;gap:10px;padding:6px 0;align-items:flex-start}
+.chk input{margin-top:5px;accent-color:var(--primary)}
+.facts details{margin-top:8px}
+mark.pv{background:transparent;color:var(--cv);font-weight:700;border-bottom:2px solid var(--cv)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+
+<header>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Target English · 90-minute lesson · B1+/B2</div>
+      <h1>Passive Voice Chocolate Lab</h1>
+      <div class="sub">Brands and production · Revision: Infinitive &amp; Gerund, Time clauses · New: Passive voice</div>
+    </div>
+    <div class="clock" aria-label="Lesson clock">
+      <span class="clockT" id="clockT">0:00</span>
+      <button id="clockGo">Start</button><button id="clockReset">Reset</button>
+      <span class="clockN" id="clockN">Planned: 90 minutes</span>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="Lesson sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
+
+<main class="wrap">
+<div class="prog" id="prog" aria-live="polite"></div>
+
+<!-- 1 WARM-UP + WORDS -->
+<section id="p-warm" data-title="1 · Warm-up &amp; words" data-min="8" hidden>
+  <h2>Warm-up: chocolate and brands</h2>
+  <p class="lead">Take a card, answer it in two or three sentences, then check the words below.</p>
+  <div class="card stage" aria-live="polite">
+    <div class="spread"><span class="tag">Speaking card</span><span class="small" id="qCount"></span></div>
+    <div class="big" id="qText"></div>
+    <div class="small" id="qHint"></div>
+  </div>
+  <div class="bar">
+    <button class="btn ghost" id="qPrev">← Back</button>
+    <button class="btn" id="qNext">Next card →</button>
+    <button class="btn ghost" id="qShuffle">Shuffle</button>
+  </div>
+
+  <h3>Chocolate-making words</h3>
+  <p class="small">Tap the card to turn it. Mark each word “Got it” or “Again”.</p>
+  <div class="card stage flip" id="vCard" tabindex="0" role="button" aria-label="Flip card" aria-live="polite">
+    <div class="spread"><span class="tag" id="vGroup"></span><span class="small" id="vCount"></span></div>
+    <div id="vBody"></div>
+    <div class="small">Tap or press Space to flip</div>
+  </div>
+  <div class="bar">
+    <button class="btn ghost" id="vPrev">← Back</button>
+    <button class="btn warn" id="vAgain">Again</button>
+    <button class="btn ok" id="vGot">Got it</button>
+    <button class="btn ghost" id="vNext">Skip →</button>
+    <span class="small" id="vStat"></span>
+  </div>
+</section>
+
+<!-- 2 INF & GER -->
+<section id="p-ig" data-title="2 · Infinitive &amp; Gerund" data-min="15" hidden>
+  <h2>Revision: Infinitive or Gerund?</h2>
+  <p class="lead">Quick revision of the rules you know. Try first, check the reminder if you need it.</p>
+  <details>
+    <summary>Reminder card</summary>
+    <ul class="clean">
+      <li><b>to + verb:</b> agree, decide, fail, manage, offer, refuse, promise, plan, afford, hope, expect, learn, tend, would like / would love; adjectives (glad, surprised, ready…) + to; too / enough + to; question words + to (not <em>why</em>).</li>
+      <li><b>verb + -ing:</b> avoid, deny, enjoy, mind, postpone, suggest, consider, imagine, risk, keep, give up, can't stand, look forward to, be used to; after prepositions; go + activity.</li>
+      <li><b>bare infinitive:</b> modals; let / make + object; hear / see / watch + object (whole action).</li>
+      <li><b>Meaning changes:</b> stop, remember, forget, regret, try.</li>
+    </ul>
+  </details>
+  <h3>A · Choose the correct form</h3>
+  <div class="card"><div id="ig1"></div></div>
+  <h3>B · Sort the verbs</h3>
+  <p>Tap a verb, then tap the box it belongs in. Tap a placed verb to take it back.</p>
+  <div class="card"><div id="ig2"></div></div>
+  <h3>C · Find and correct the mistake</h3>
+  <p>Type the correct form of the underlined part.</p>
+  <div class="card"><div id="ig3"></div></div>
+  <h3>D · Feel the difference</h3>
+  <p>Choose the meaning of the sentence.</p>
+  <div class="card"><div id="ig4"></div></div>
+  <h3>E · Key word transformation</h3>
+  <p>Complete the second sentence using the word in capitals. Write the whole sentence.</p>
+  <div class="card"><div id="ig5"></div></div>
+</section>
+
+<!-- 3 TIME CLAUSES -->
+<section id="p-tc" data-title="3 · Time clauses" data-min="13" hidden>
+  <h2>Revision: Time clauses</h2>
+  <p class="lead">Remember: after a time conjunction we use a present form for the future.</p>
+  <div class="rule">
+    <p><b>Conjunctions:</b> when · as · while · before · after · until / till · since · as soon as · by the time · the moment · whenever · as long as · no sooner … than · hardly … when</p>
+    <p><b>Comma:</b> if the time clause comes <u>first</u>, use a comma. <em>After we finish, we will wrap the bars.</em> / <em>We will wrap the bars after we finish.</em></p>
+    <p><b>No future after time words:</b> <em>I'll call you as soon as I <span class="cv">get</span> home</em> (NOT <s>will get</s>). Use present simple or present perfect.</p>
+    <div class="scroll"><table>
+      <tr><th>Main clause</th><th>Time clause</th><th>Example</th></tr>
+      <tr><td>present / future / imperative</td><td>present simple or present perfect</td><td>We will wrap the bars after they <span class="cv">have cooled</span>.</td></tr>
+      <tr><td>past simple / past perfect</td><td>past simple or past perfect</td><td>She <span class="cs">had tasted</span> it before she <span class="cv">changed</span> the recipe.</td></tr>
+    </table></div>
+  </div>
+  <h3>A · Comma clinic</h3>
+  <p>Tap the place where the comma goes. If no comma is needed, tap “No comma”.</p>
+  <div class="card"><div id="tc1"></div></div>
+  <h3>B · Choose the correct tense</h3>
+  <div class="card"><div id="tc2"></div></div>
+  <h3>C · Build the sentence</h3>
+  <p>Tap the words in the right order. Some sentences can be built in two ways. Add a comma tile when you need one.</p>
+  <div class="card"><div id="tc3"></div></div>
+</section>
+
+<!-- 4 PASSIVE RULES -->
+<section id="p-pr" data-title="4 · Passive: rules" data-min="10" hidden>
+  <h2>New: Passive voice</h2>
+  <p class="lead">Follow one chocolate bar from the tree to the shop. Notice what is important in each sentence: the action or the person?</p>
+
+  <h3>From bean to bar</h3>
+  <div class="card">
+    <div class="steps" id="bbSteps" role="group" aria-label="Production steps"></div>
+    <p class="tag" id="bbName"></p>
+    <p class="big" id="bbPas"></p>
+    <p class="small" id="bbAct" hidden></p>
+    <div class="bar"><button class="btn ghost" id="bbToggle">Show the active version</button><button class="btn" id="bbNext">Next step →</button></div>
+  </div>
+
+  <h3>How is the passive formed?</h3>
+  <div class="rule">
+    <p><b>Subject + <span class="cv">be</span> (in the same tense as the active verb) + <span class="cv">past participle</span></b></p>
+    <p>Add <b>by + doer</b> only if it is important or surprising. Drop it for <em>people, someone, they, workers</em>.</p>
+  </div>
+  <h3>Passive machine</h3>
+  <p>Pick a sentence and press “Next step”. <span class="cs">Doer</span> · <span class="cv">verb</span> · <span class="co">object</span></p>
+  <div class="card">
+    <div class="row" id="pmChips" style="margin-bottom:10px"></div>
+    <p>Active: <span id="pmAct"></span></p>
+    <p>Passive: <span id="pmPas"></span></p>
+    <p class="small" id="pmNote"></p>
+    <div class="bar"><button class="btn" id="pmNext">Next step →</button><button class="btn ghost" id="pmReset">Start again</button></div>
+  </div>
+
+  <h3>All the forms</h3>
+  <div class="scroll"><table>
+    <tr><th>Form</th><th>Active</th><th>Passive</th></tr>
+    <tr><td>Present simple</td><td>They roast the beans.</td><td>The beans <b>are roasted</b>.</td></tr>
+    <tr><td>Present continuous</td><td>They are roasting the beans.</td><td>The beans <b>are being roasted</b>.</td></tr>
+    <tr><td>Past simple</td><td>They roasted the beans.</td><td>The beans <b>were roasted</b>.</td></tr>
+    <tr><td>Past continuous</td><td>They were roasting the beans.</td><td>The beans <b>were being roasted</b>.</td></tr>
+    <tr><td>Present perfect</td><td>They have roasted the beans.</td><td>The beans <b>have been roasted</b>.</td></tr>
+    <tr><td>Past perfect</td><td>They had roasted the beans.</td><td>The beans <b>had been roasted</b>.</td></tr>
+    <tr><td>Future simple</td><td>They will roast the beans.</td><td>The beans <b>will be roasted</b>.</td></tr>
+    <tr><td>Be going to</td><td>They are going to roast the beans.</td><td>The beans <b>are going to be roasted</b>.</td></tr>
+    <tr><td>Future perfect</td><td>They will have roasted the beans.</td><td>The beans <b>will have been roasted</b>.</td></tr>
+    <tr><td>Present infinitive</td><td>We will have to roast the beans again.</td><td>The beans will have <b>to be roasted</b> again.</td></tr>
+    <tr><td>Perfect infinitive</td><td>She ought to have tasted the bar.</td><td>The bar ought <b>to have been tasted</b>.</td></tr>
+    <tr><td>Gerund</td><td>He likes people praising his brand.</td><td>He likes his brand <b>being praised</b>.</td></tr>
+    <tr><td>Perfect gerund</td><td>Having roasted the beans, they cracked them.</td><td>The beans, <b>having been roasted</b>, were cracked.</td></tr>
+    <tr><td>Modal verbs</td><td>They must roast the beans. / They may have recalled the batch.</td><td>The beans <b>must be roasted</b>. / The batch may <b>have been recalled</b>.</td></tr>
+  </table></div>
+
+  <h3>When do we use the passive?</h3>
+  <div class="facts" id="why"></div>
+
+  <h3>More rules to know</h3>
+  <div class="facts" id="notes"></div>
+
+  <h3>Did you know?</h3>
+  <div class="facts" id="facts"></div>
+</section>
+
+<!-- 5 PASSIVE PRACTICE -->
+<section id="p-pp" data-title="5 · Passive: practice" data-min="25" hidden>
+  <h2>Passive practice</h2>
+  <p class="lead"><b>Core (A–H)</b> fits in about 25 minutes. The <b>extra</b> exercises at the bottom are for extra time or for homework.</p>
+  <h3>A · Spot the passive</h3>
+  <div class="card"><div id="pa1"></div></div>
+  <h3>B · Choose the correct form</h3>
+  <div class="card"><div id="pa2"></div></div>
+  <h3>C · Active to passive</h3>
+  <p>Build the passive sentence from the tiles. Some tiles are not needed.</p>
+  <div class="card"><div id="pa3"></div></div>
+  <h3>D · By or with?</h3>
+  <div class="card"><div id="pa9"></div></div>
+  <h3>E · Two ways</h3>
+  <p>These verbs have two objects. Build the passive sentence in two ways.</p>
+  <div class="card"><div id="pa10"></div></div>
+  <h3>F · Reporting passives</h3>
+  <p>Complete each sentence in two ways. Type the missing part.</p>
+  <div class="card"><div id="pa11"></div></div>
+  <h3>G · Past continuous or past perfect passive</h3>
+  <p>Write the verb in brackets in the correct passive form.</p>
+  <div class="card"><div id="pa12"></div></div>
+  <h3>H · From bean to bar (text)</h3>
+  <p>Write the verb in brackets in the correct form. Most gaps are passive. One verb has no passive.</p>
+  <div class="card"><div id="pa4"></div></div>
+
+  <h2 style="margin-top:32px">Extra practice</h2>
+  <h3>I · Active or passive?</h3>
+  <div class="card"><div id="pa5"></div></div>
+  <h3>J · Find and correct the mistake</h3>
+  <p>Type the correct verb phrase.</p>
+  <div class="card"><div id="pa6"></div></div>
+  <h3>K · Passive with infinitive and gerund</h3>
+  <p>This connects the passive with your revision.</p>
+  <div class="card"><div id="pa7"></div></div>
+  <h3>L · Level up</h3>
+  <p><em>Have something done</em> and reporting passives.</p>
+  <div class="card"><div id="pa8"></div></div>
+  <h3>M · Passive into active</h3>
+  <p>Rewrite each sentence in the active voice. Invent the doer where needed (someone, people, they).</p>
+  <div class="card"><div id="pa14"></div></div>
+  <h3>N · The old factory</h3>
+  <p>Write the verb in brackets in the correct passive form.</p>
+  <div class="card"><div id="pa15"></div></div>
+  <h3>O · Rewrite the passage in the passive</h3>
+  <div class="card" id="pa13"></div>
+</section>
+
+<!-- 6 MIXED -->
+<section id="p-mx" data-title="6 · Mix it up" data-min="6" hidden>
+  <h2>Mix it up</h2>
+  <p class="lead">One text, three topics: infinitive or gerund, time clauses and passive.</p>
+  <div class="card"><div id="mx"></div></div>
+</section>
+
+<!-- 7 SPEAK & WRITE -->
+<section id="p-sw" data-title="7 · Speak &amp; write" data-min="11" hidden>
+  <h2>Speak</h2>
+  <p class="lead">Choose a topic. Prepare for one minute, then speak for two minutes.</p>
+  <div class="row" id="spChips" style="margin-bottom:10px"></div>
+  <div class="card">
+    <p class="tag">Your topic</p>
+    <p class="big" id="spTopic"></p>
+    <p class="small">Use at least <b>five passive forms</b> and <b>three time clauses</b>. Useful: <span class="pill">first</span><span class="pill">then</span><span class="pill">once</span><span class="pill">as soon as</span><span class="pill">before</span><span class="pill">after</span><span class="pill">until</span><span class="pill">by the time</span><span class="pill">while</span></p>
+    <div class="row" style="margin-top:8px"><span class="small" style="width:100%">1. Prepare</span><span class="timer" id="t1">1:00</span><button class="btn ghost" data-t="t1" data-s="60">Start / pause</button><button class="btn ghost" data-r="t1" data-s="60">Reset</button></div>
+    <div class="row" style="margin-top:10px"><span class="small" style="width:100%">2. Speak</span><span class="timer" id="t2">2:00</span><button class="btn ghost" data-t="t2" data-s="120">Start / pause</button><button class="btn ghost" data-r="t2" data-s="120">Reset</button></div>
+  </div>
+
+  <h2 style="margin-top:28px">Write</h2>
+  <div class="card">
+    <p class="tag">Writing task</p>
+    <p>You write for a food magazine. Choose a real or imaginary chocolate brand. Write <b>100–130 words</b> about how its chocolate is made and how the brand is promoted.</p>
+    <p class="small">Use at least <b>4 passive forms</b> and <b>3 time clauses</b>. Include one sentence with an infinitive or a gerund after a verb from the revision.</p>
+  </div>
+  <textarea id="wText" rows="10" style="margin-top:10px" placeholder="Start writing here…" aria-label="Your text"></textarea>
+  <div class="spread" style="margin-top:6px"><span id="wCount" class="score"></span><button class="btn ghost" id="wCopy">Copy text</button></div>
+  <p class="small">The counters below are automatic and approximate. Your teacher checks the details.</p>
+  <div id="wReport"></div>
+</section>
+
+<!-- 8 WRAP-UP -->
+<section id="p-wr" data-title="8 · Wrap-up" data-min="2" hidden>
+  <h2>Wrap-up</h2>
+  <h3>Your scores</h3>
+  <div class="card scroll"><div id="summary"></div></div>
+  <h3>I can…</h3>
+  <div class="card chk">
+    <label><input type="checkbox"> choose between infinitive and gerund after common verbs</label>
+    <label><input type="checkbox"> use present tenses correctly after when, before, until, as soon as</label>
+    <label><input type="checkbox"> form the passive in the main tenses and with modal verbs</label>
+    <label><input type="checkbox"> decide when to use the passive and when to leave out the doer (by / with)</label>
+    <label><input type="checkbox"> use reporting passives: <em>it is said that… / he is said to…</em></label>
+    <label><input type="checkbox"> describe a production process using passives and time clauses</label>
+  </div>
+  <h3>Three sentences I will remember</h3>
+  <textarea rows="3" aria-label="Three sentences" placeholder="Write three sentences you want to remember…"></textarea>
+  <h3>Homework ideas</h3>
+  <ul class="clean">
+    <li>Find a label or a website text about a product you like. Underline every passive and rewrite three sentences in the active voice.</li>
+    <li>Describe how another product is made (coffee, bread, jeans) in 100 words using passives and time clauses.</li>
+  </ul>
+</section>
+</main>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function sget(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function sset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function norm(s){return String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+,/g,",").replace(/[.!?;:]+$/,"").replace(/\s+/g," ").trim()}
+
+/* ---------- TABS & PROGRESS ---------- */
+var panels=$$("main > section"),tabsEl=$("#tabs"),cur=0,EX={};
+var BLOCKS=[];
+panels.forEach(function(p,i){
+  var m=parseInt(p.getAttribute("data-min"),10);BLOCKS.push({name:p.getAttribute("data-title").replace(/^\d · /,"").replace(/&amp;/g,"&"),min:m});
+  var b=el("button","",p.getAttribute("data-title")+"<span class='mins'>"+m+"′</span>");b.setAttribute("role","tab");b.id="tab"+i;
+  b.addEventListener("click",function(){show(i,true)});tabsEl.appendChild(b);
+});
+function show(i,save){
+  cur=i;panels.forEach(function(p,j){p.hidden=(i!==j)});
+  $$("#tabs button").forEach(function(b,j){b.setAttribute("aria-selected",String(i===j))});
+  var b=$("#tab"+i);if(b&&b.scrollIntoView){try{b.scrollIntoView({block:"nearest",inline:"center"})}catch(e){}}
+  if(panels[i].id==="p-wr")renderSummary();
+  if(save){sset("ptab",String(i));window.scrollTo(0,0)}
+}
+function refresh(){
+  var ids=Object.keys(EX),done=ids.filter(function(k){return EX[k].got!==null}).length;
+  $("#prog").textContent="Exercises checked: "+done+" / "+ids.length;
+  $$("#tabs button").forEach(function(b,j){
+    var mine=ids.filter(function(k){return EX[k].tab===j});
+    var all=mine.length>0&&mine.every(function(k){return EX[k].got!==null});
+    var m=$(".mins",b);if(m)m.textContent=(all?"✓ ":"")+BLOCKS[j].min+"′";
+  });
+}
+function renderSummary(){
+  var ids=Object.keys(EX),rows="",G=0,T=0;
+  ids.forEach(function(k){
+    var e=EX[k];
+    if(e.got===null)rows+="<tr><td>"+e.title+"</td><td colspan='2'>not checked yet</td></tr>";
+    else{G+=e.got;T+=e.total;rows+="<tr><td>"+e.title+"</td><td>"+e.got+" / "+e.total+"</td><td>"+Math.round(100*e.got/e.total)+"%</td></tr>"}
+  });
+  $("#summary").innerHTML="<table><tr><th>Exercise</th><th>Score</th><th>%</th></tr>"+rows+"<tr><td><b>Total</b></td><td><b>"+G+" / "+T+"</b></td><td><b>"+(T?Math.round(100*G/T):0)+"%</b></td></tr></table>";
+}
+
+/* ---------- LESSON CLOCK ---------- */
+(function(){
+  var sec=0,h=null;
+  function draw(){
+    var m=Math.floor(sec/60),s=sec%60;$("#clockT").textContent=m+":"+(s<10?"0":"")+s;
+    var acc=0,n=$("#clockN"),found=false;
+    for(var i=0;i<BLOCKS.length;i++){
+      var start=acc;acc+=BLOCKS[i].min;
+      if(sec<acc*60){n.textContent="Now: "+BLOCKS[i].name+" (minutes "+start+"–"+acc+")";n.className="clockN";found=true;break}
+    }
+    if(!found){n.textContent="Over the planned 90 minutes";n.className="clockN over"}
+  }
+  $("#clockGo").addEventListener("click",function(){
+    var b=$("#clockGo");
+    if(h){clearInterval(h);h=null;b.textContent="Start";return}
+    b.textContent="Pause";h=setInterval(function(){sec++;draw()},1000);
+  });
+  $("#clockReset").addEventListener("click",function(){clearInterval(h);h=null;sec=0;$("#clockGo").textContent="Start";$("#clockN").textContent="Planned: 90 minutes";$("#clockN").className="clockN";$("#clockT").textContent="0:00"});
+})();
+
+/* ---------- HELPERS ---------- */
+function controls(host,id,title,fns){
+  var tab=panels.indexOf(host.closest("section"));
+  EX[id]={tab:tab,title:title,got:null,total:null};
+  var bar=el("div","bar"),sc=el("span","score");
+  var b1=el("button","btn","Check answers"),b2=el("button","btn ghost","Reset"),b3=el("button","btn ghost","Show answers");
+  b1.addEventListener("click",function(){var r=fns.check();sc.textContent="Score: "+r[0]+" / "+r[1];EX[id].got=r[0];EX[id].total=r[1];refresh()});
+  b2.addEventListener("click",function(){fns.reset();sc.textContent="";EX[id].got=null;EX[id].total=null;refresh()});
+  b3.addEventListener("click",function(){fns.show();fns.check();sc.textContent="Answers shown";EX[id].got=null;EX[id].total=null;refresh()});
+  bar.appendChild(b1);bar.appendChild(b2);bar.appendChild(b3);bar.appendChild(sc);host.appendChild(bar);
+}
+function mark(node,ok){node.classList.remove("ok-cell","bad-cell");node.classList.add(ok?"ok-cell":"bad-cell")}
+function unmark(nodes){nodes.forEach(function(n){n.classList.remove("ok-cell","bad-cell","ok","bad","hint")})}
+
+/* select list: items [text with {}, options[], answer] */
+function selList(host,id,title,items){
+  var sels=[];
+  items.forEach(function(it,i){
+    var q=el("div","q gapline");var parts=it[0].split("{}");
+    var sel=el("select");sel.id=id+"-"+i;sel.setAttribute("aria-label","Gap "+(i+1));
+    sel.innerHTML="<option value=''>choose…</option>"+shuffle(it[1]).map(function(w){return "<option>"+w+"</option>"}).join("");
+    q.appendChild(el("span","","<b>"+(i+1)+".</b> "+parts[0]));q.appendChild(sel);q.appendChild(el("span","",parts[1]));
+    host.appendChild(q);sels.push(sel);
+  });
+  controls(host,id,title,{
+    check:function(){unmark(sels);var s=0;sels.forEach(function(x,i){var ok=x.value===items[i][2];if(ok)s++;mark(x,ok)});return [s,items.length]},
+    reset:function(){sels.forEach(function(x){x.value=""});unmark(sels)},
+    show:function(){sels.forEach(function(x,i){x.value=items[i][2]})}
+  });
+}
+/* multiple choice with long options; items {q,o[],a} */
+function mcq(host,id,title,items){
+  var L="ABCD",data=items.map(function(it){var o=shuffle(it.o.map(function(t,i){return {t:t,c:i===it.a}}));return {q:it.q,o:o}});
+  data.forEach(function(it,i){
+    var q=el("div","q");q.appendChild(el("p","stem","<b>"+(i+1)+".</b> "+it.q));
+    it.o.forEach(function(op,j){q.appendChild(el("label","opt","<input type='radio' name='"+id+"-"+i+"' value='"+j+"'><span><b>"+L[j]+")</b> "+op.t+"</span>"))});
+    host.appendChild(q);
+  });
+  function ins(i){return $$("input[name='"+id+"-"+i+"']",host)}
+  controls(host,id,title,{
+    check:function(){
+      unmark($$(".opt",host));var s=0;
+      data.forEach(function(it,i){
+        var inputs=ins(i),sel=inputs.filter(function(x){return x.checked})[0],labs=inputs.map(function(x){return x.parentNode});
+        var ci=it.o.findIndex(function(o){return o.c});
+        if(sel&&parseInt(sel.value,10)===ci){s++;labs[ci].classList.add("ok")}
+        else{if(sel)labs[parseInt(sel.value,10)].classList.add("bad");labs[ci].classList.add("hint")}
+      });
+      return [s,data.length];
+    },
+    reset:function(){$$("input",host).forEach(function(x){x.checked=false});unmark($$(".opt",host))},
+    show:function(){data.forEach(function(it,i){ins(i)[it.o.findIndex(function(o){return o.c})].checked=true})}
+  });
+}
+/* typed answers; items {h, acc[], wide} */
+function typed(host,id,title,items){
+  var inputs=[];
+  items.forEach(function(it,i){
+    var q=el("div","q");q.appendChild(el("p","stem","<b>"+(i+1)+".</b> "+it.h));
+    var inp=el("input");inp.type="text";inp.className="wide";inp.id=id+"-"+i;inp.autocomplete="off";inp.spellcheck=false;inp.setAttribute("aria-label","Answer "+(i+1));
+    q.appendChild(inp);host.appendChild(q);inputs.push(inp);
+  });
+  controls(host,id,title,{
+    check:function(){unmark(inputs);var s=0;inputs.forEach(function(x,i){var ok=items[i].acc.map(norm).indexOf(norm(x.value))>-1;if(ok)s++;mark(x,ok)});return [s,items.length]},
+    reset:function(){inputs.forEach(function(x){x.value=""});unmark(inputs)},
+    show:function(){inputs.forEach(function(x,i){x.value=items[i].acc[0]})}
+  });
+}
+/* cloze with gaps {1}..{n}; mode "sel" or "typed" */
+function cloze(host,id,title,html,gaps,mode){
+  var inputs=[];
+  var box=el("div","gapline",html.replace(/\{(\d+)\}/g,"<span data-g='$1'></span>"));
+  host.appendChild(box);
+  gaps.forEach(function(g,i){
+    var slot=$("[data-g='"+(i+1)+"']",box),node;
+    if(mode==="sel"){node=el("select");node.innerHTML="<option value=''>"+(i+1)+" …</option>"+shuffle(g.o).map(function(w){return "<option>"+w+"</option>"}).join("")}
+    else{node=el("input");node.type="text";node.className="gapin";node.placeholder=String(i+1);node.autocomplete="off";node.spellcheck=false}
+    node.id=id+"-"+i;node.setAttribute("aria-label","Gap "+(i+1));slot.appendChild(node);inputs.push(node);
+  });
+  function acc(g){return mode==="sel"?[g.a]:g.a}
+  controls(host,id,title,{
+    check:function(){unmark(inputs);var s=0;inputs.forEach(function(x,i){var ok=acc(gaps[i]).map(norm).indexOf(norm(x.value))>-1;if(ok)s++;mark(x,ok)});return [s,gaps.length]},
+    reset:function(){inputs.forEach(function(x){x.value=""});unmark(inputs)},
+    show:function(){inputs.forEach(function(x,i){x.value=acc(gaps[i])[0]})}
+  });
+}
+/* tile builder; items {p, w[], a[]} */
+function builder(host,id,title,items){
+  var objs=[];
+  items.forEach(function(it,i){
+    var q=el("div","q");q.appendChild(el("p","stem","<b>"+(i+1)+".</b> "+it.p));
+    var ans=el("div","answer"),pool=el("div","pool"),model=el("div","model","Model: "+it.a[0]);model.hidden=true;
+    var tiles=shuffle(it.w).map(function(w){
+      var b=el("button","tile",w);b.type="button";
+      b.addEventListener("click",function(){ans.classList.remove("ok-cell","bad-cell");if(b.parentNode===pool)ans.appendChild(b);else pool.appendChild(b)});
+      pool.appendChild(b);return b;
+    });
+    q.appendChild(ans);q.appendChild(pool);q.appendChild(model);host.appendChild(q);
+    objs.push({ans:ans,pool:pool,tiles:tiles,model:model,it:it});
+  });
+  controls(host,id,title,{
+    check:function(){var s=0;objs.forEach(function(o){
+      var sent=norm($$(".tile",o.ans).map(function(t){return t.textContent}).join(" "));
+      var ok=o.it.a.map(norm).indexOf(sent)>-1;if(ok)s++;mark(o.ans,ok);o.model.hidden=ok;if(!ok)o.model.hidden=true;});return [s,objs.length]},
+    reset:function(){objs.forEach(function(o){o.tiles.forEach(function(t){o.pool.appendChild(t)});o.ans.classList.remove("ok-cell","bad-cell");o.model.hidden=true})},
+    show:function(){objs.forEach(function(o){
+      o.tiles.forEach(function(t){o.pool.appendChild(t)});
+      var words=o.it.a[0].replace(/,/g," , ").split(/\s+/).filter(Boolean),used=[];
+      words.forEach(function(w){
+        var t=o.tiles.filter(function(x){return used.indexOf(x)<0&&norm(x.textContent)===norm(w)})[0];
+        if(t){used.push(t);o.ans.appendChild(t)}
+      });o.model.hidden=false;})}
+  });
+}
+/* sorter */
+function sorter(host,id,title,bins,chips){
+  var pool=el("div","pool"),sel=null,binEls={},chipEls=[];
+  var grid=el("div","bins");
+  bins.forEach(function(b){
+    var box=el("div","bin","<h4>"+b.label+"</h4>"),area=el("div","pool");box.appendChild(area);
+    box.addEventListener("click",function(e){if(e.target.classList.contains("tile"))return;if(sel){area.appendChild(sel);sel.classList.remove("sel");sel=null}});
+    grid.appendChild(box);binEls[b.k]=area;
+  });
+  shuffle(chips).forEach(function(c){
+    var b=el("button","tile",c.w);b.type="button";b.dataset.k=c.k;
+    b.addEventListener("click",function(e){
+      e.stopPropagation();b.classList.remove("ok-cell","bad-cell");
+      if(b.parentNode!==pool){pool.appendChild(b);return}
+      if(sel&&sel!==b)sel.classList.remove("sel");
+      sel=(sel===b)?null:b;b.classList.toggle("sel",sel===b);
+    });
+    pool.appendChild(b);chipEls.push(b);
+  });
+  host.appendChild(pool);host.appendChild(grid);
+  controls(host,id,title,{
+    check:function(){var s=0;chipEls.forEach(function(c){var ok=c.parentNode!==pool&&c.parentNode===binEls[c.dataset.k];if(ok)s++;if(c.parentNode===pool){c.classList.remove("ok-cell","bad-cell")}else mark(c,ok)});return [s,chipEls.length]},
+    reset:function(){chipEls.forEach(function(c){c.classList.remove("ok-cell","bad-cell","sel");pool.appendChild(c)});sel=null},
+    show:function(){chipEls.forEach(function(c){c.classList.remove("sel");binEls[c.dataset.k].appendChild(c)});sel=null}
+  });
+}
+/* comma clinic; items {w[], g} (g = index of word after which comma goes, -1 none) */
+function commaClinic(host,id,title,items){
+  var st=[],boxes=[];
+  items.forEach(function(it,i){
+    var q=el("div","q"),line=el("div","cline"),gaps=[];st.push(null);
+    it.w.forEach(function(w,j){
+      line.appendChild(el("span","cw",w));
+      if(j<it.w.length-1){
+        var g=el("button","cgap","");g.type="button";g.setAttribute("aria-label","comma after "+w);
+        g.addEventListener("click",function(){st[i]=(st[i]===j)?null:j;draw(i)});line.appendChild(g);gaps.push(g);
+      }
+    });
+    var none=el("button","chip","No comma");none.type="button";none.addEventListener("click",function(){st[i]=(st[i]===-1)?null:-1;draw(i)});
+    q.appendChild(el("p","stem","<b>"+(i+1)+".</b>"));q.appendChild(line);q.appendChild(none);host.appendChild(q);
+    boxes.push({q:q,gaps:gaps,none:none});
+  });
+  function draw(i){var b=boxes[i];b.gaps.forEach(function(g,j){g.classList.toggle("on",st[i]===j)});b.none.setAttribute("aria-pressed",String(st[i]===-1));b.q.classList.remove("ok-cell","bad-cell")}
+  controls(host,id,title,{
+    check:function(){var s=0;items.forEach(function(it,i){var ok=st[i]===it.g;if(ok)s++;boxes[i].q.classList.remove("ok-cell","bad-cell");boxes[i].q.classList.add(ok?"ok-cell":"bad-cell")});return [s,items.length]},
+    reset:function(){items.forEach(function(it,i){st[i]=null;draw(i);boxes[i].q.classList.remove("ok-cell","bad-cell")})},
+    show:function(){items.forEach(function(it,i){st[i]=it.g;draw(i)})}
+  });
+}
+/* spotter; items {t, p} */
+function spotter(host,id,title,items){
+  var btns=[];
+  items.forEach(function(it,i){
+    var b=el("button","spot",(i+1)+". "+it.t);b.type="button";b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));b.classList.remove("ok-cell","bad-cell")});
+    host.appendChild(b);btns.push(b);
+  });
+  host.insertBefore(el("p","small","Tap = passive. Leave active sentences untouched."),host.firstChild);
+  controls(host,id,title,{
+    check:function(){var s=0;btns.forEach(function(b,i){var on=b.getAttribute("aria-pressed")==="true",ok=on===items[i].p;if(ok)s++;mark(b,ok)});return [s,items.length]},
+    reset:function(){btns.forEach(function(b){b.setAttribute("aria-pressed","false");b.classList.remove("ok-cell","bad-cell")})},
+    show:function(){btns.forEach(function(b,i){b.setAttribute("aria-pressed",String(items[i].p))})}
+  });
+}
+
+/* ---------- 1. WARM-UP CARDS ---------- */
+var QS=[
+ ["Which chocolate brands are most popular in your country? Why do people choose one brand and not another?","Think about taste, price, packaging and advertising."],
+ ["How do you think chocolate is made? Describe the main steps from bean to bar.","Try to use: first, then, after that."],
+ ["What has to be done before a new chocolate bar can be sold in the shops?","Think about recipes, tests, packaging, advertising."],
+ ["Do you prefer famous brands or supermarket own-brand chocolate? What is the difference?","Give a reason and an example."],
+ ["What is your favourite chocolate? What is it known for?","Is it known for its taste, its history or its advertising?"],
+ ["Which chocolate advert do you remember? How was the product advertised?","Who was the advert aimed at?"]
+];
+var qi=0,qList=QS.slice();
+function qDraw(){var c=qList[qi];$("#qText").textContent=c[0];$("#qHint").textContent=c[1];$("#qCount").textContent=(qi+1)+" / "+qList.length}
+$("#qNext").addEventListener("click",function(){qi=(qi+1)%qList.length;qDraw()});
+$("#qPrev").addEventListener("click",function(){qi=(qi-1+qList.length)%qList.length;qDraw()});
+$("#qShuffle").addEventListener("click",function(){qList=shuffle(QS);qi=0;qDraw()});
+qDraw();
+
+var VOC=[
+ ["a cocoa pod","the large fruit that grows on the cocoa tree and holds the beans","Each pod holds dozens of beans."],
+ ["a cocoa bean","the seed of the cocoa tree, used to make chocolate","Cocoa beans are dried in the sun."],
+ ["to ferment","to let food change slowly with natural yeast or bacteria","The beans are fermented for several days."],
+ ["to roast","to cook with dry heat","The beans are roasted and then cracked."],
+ ["to grind","to crush something into powder or paste","The nibs are ground into a thick paste."],
+ ["cocoa butter","the natural fat in cocoa beans","Cocoa butter is added to make the chocolate smooth."],
+ ["to conche","to stir and warm chocolate for a long time so that it becomes smooth","The mixture is conched for many hours."],
+ ["to temper","to heat and cool chocolate carefully so that it becomes shiny and snaps","The chocolate must be tempered before it is poured."],
+ ["a mould (mold, US)","a shaped container that liquid is poured into","The chocolate is poured into moulds."],
+ ["a batch","a quantity of something produced at one time","Each batch is tested in the laboratory."],
+ ["shelf life","the time a product can be kept before it goes bad","The shelf life of dark chocolate is long."],
+ ["packaging","the box, paper or plastic around a product","The packaging was redesigned last year."],
+ ["to source (ingredients)","to find and buy something from a particular place","The cocoa is sourced from small farms."],
+ ["fair trade","a system that gives farmers a fair price for their products","This bar is made from fair-trade cocoa."],
+ ["to recall (a product)","to ask customers to return a product because of a problem","The whole batch was recalled."],
+ ["brand awareness","how well customers know and remember a brand","A big advertising campaign can raise brand awareness."]
+];
+var vi=0,vFlip=false,vKnown={},vList=shuffle(VOC);
+function vDraw(){
+  var c=vList[vi],n=0;VOC.forEach(function(x){if(vKnown[x[0]])n++});
+  $("#vStat").textContent="Got it: "+n+" / "+VOC.length;$("#vGroup").textContent="Chocolate & brands";$("#vCount").textContent=(vi+1)+" / "+vList.length;
+  $("#vBody").innerHTML=vFlip?"<div class='big' style='font-size:1.2rem'>"+c[1]+"</div><p class='small' style='margin-top:10px'><em>"+c[2]+"</em></p>":"<div class='big'>"+c[0]+"</div>";
+}
+function vMove(d){vi=(vi+d+vList.length)%vList.length;vFlip=false;vDraw()}
+$("#vCard").addEventListener("click",function(){vFlip=!vFlip;vDraw()});
+$("#vCard").addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();vFlip=!vFlip;vDraw()}});
+$("#vNext").addEventListener("click",function(){vMove(1)});$("#vPrev").addEventListener("click",function(){vMove(-1)});
+$("#vGot").addEventListener("click",function(){vKnown[vList[vi][0]]=true;vMove(1)});
+$("#vAgain").addEventListener("click",function(){delete vKnown[vList[vi][0]];vMove(1)});
+vDraw();
+
+/* ---------- 2. INFINITIVE & GERUND ---------- */
+selList($("#ig1"),"ig1","Infinitive / gerund: choose",[
+ ["The company agreed {} the price of its premium bars.",["increasing","to increase","increase"],"to increase"],
+ ["We can't afford {} another recall.",["to have","having","have"],"to have"],
+ ["The head chocolatier made us {} the recipe again.",["to change","changing","change"],"change"],
+ ["She is looking forward to {} the new chocolate factory.",["visit","visiting","to visit"],"visiting"],
+ ["They suggested {} the launch until the cocoa arrived.",["postponing","to postpone","postpone"],"postponing"],
+ ["He pretended {} an expert on chocolate.",["to be","being","be"],"to be"],
+ ["Our supplier failed {} the cocoa beans on time.",["deliver","delivering","to deliver"],"to deliver"],
+ ["I don't mind {} more for good chocolate.",["to pay","paying","pay"],"paying"],
+ ["The manager let us {} the new flavours.",["to taste","tasting","taste"],"taste"],
+ ["Do you know how {} real chocolate?",["make","to make","making"],"to make"],
+ ["We are too full {} another piece.",["to eat","eating","eat"],"to eat"],
+ ["She is very good at {} new brand names.",["to invent","inventing","invent"],"inventing"]
+]);
+sorter($("#ig2"),"ig2","Infinitive / gerund: sort",[
+ {k:"to",label:"verb + to-infinitive"},{k:"ing",label:"verb + -ing"},{k:"bare",label:"+ bare infinitive (modals, let / make)"}
+],[
+ {w:"agree",k:"to"},{w:"decide",k:"to"},{w:"fail",k:"to"},{w:"manage",k:"to"},{w:"offer",k:"to"},{w:"refuse",k:"to"},
+ {w:"avoid",k:"ing"},{w:"deny",k:"ing"},{w:"enjoy",k:"ing"},{w:"mind",k:"ing"},{w:"postpone",k:"ing"},{w:"suggest",k:"ing"},
+ {w:"can",k:"bare"},{w:"let",k:"bare"},{w:"make",k:"bare"},{w:"must",k:"bare"},{w:"should",k:"bare"}
+]);
+typed($("#ig3"),"ig3","Infinitive / gerund: correct the mistake",[
+ {h:"We are considering <u>to launch</u> a vegan bar.",acc:["launching","considering launching"]},
+ {h:"The brand promised <u>lowering</u> its prices.",acc:["to lower","promised to lower"]},
+ {h:"I look forward <u>to taste</u> the new flavour.",acc:["to tasting","tasting","look forward to tasting"]},
+ {h:"The chef made me <u>to taste</u> every sample.",acc:["taste","made me taste"]},
+ {h:"They can't afford <u>losing</u> this big customer.",acc:["to lose","afford to lose","can't afford to lose"]},
+ {h:"I don't know <u>what choosing</u>.",acc:["what to choose","to choose"]},
+ {h:"We were surprised <u>see</u> the sales figures.",acc:["to see","surprised to see","were surprised to see"]},
+ {h:"He is interested <u>in to work</u> for a famous brand.",acc:["in working","working","interested in working"]}
+]);
+mcq($("#ig4"),"ig4","Meaning changes",[
+ {q:"“She stopped to eat a chocolate bar.”",o:["She stopped what she was doing in order to eat one.","She gave up eating chocolate.","She never eats chocolate."],a:0},
+ {q:"“I remember buying this brand as a child.”",o:["I remember that I bought it.","I must not forget to buy it.","I plan to buy it."],a:0},
+ {q:"“Remember to buy some dark chocolate.”",o:["Don't forget to buy it.","You have already bought it.","Stop buying it."],a:0},
+ {q:"“He regrets telling the press about the recipe.”",o:["He is sorry that he told them.","He is sorry to give them bad news now.","He will tell them soon."],a:0},
+ {q:"“We regret to inform you that this flavour is no longer made.”",o:["We are sorry that we have to tell you this now.","We are sorry that we told you in the past.","We don't want to tell anybody."],a:0},
+ {q:"“Try adding a pinch of salt.”",o:["Do it as an experiment to see what happens.","Make a great effort to add salt.","Don't add salt."],a:0}
+]);
+typed($("#ig5"),"ig5","Infinitive / gerund: key word transformation",[
+ {h:"They said they would send the samples on Monday. <b>PROMISED</b>",acc:["They promised to send the samples on Monday"]},
+ {h:"The manager allowed us to leave early. <b>LET</b>",acc:["The manager let us leave early"]},
+ {h:"Don't forget to lock the storeroom. <b>REMEMBER</b>",acc:["Remember to lock the storeroom"]},
+ {h:"We bought the old factory and now we are sorry. <b>REGRET</b>",acc:["We regret buying the old factory","We regret having bought the old factory"]}
+]);
+
+/* ---------- 3. TIME CLAUSES ---------- */
+commaClinic($("#tc1"),"tc1","Time clauses: commas",[
+ {w:["Before","the","workers","roast","the","beans","they","clean","them"],g:5},
+ {w:["They","clean","the","beans","before","the","workers","roast","them"],g:-1},
+ {w:["As","soon","as","the","chocolate","cools","the","machine","wraps","each","bar"],g:5},
+ {w:["The","machine","wraps","each","bar","as","soon","as","the","chocolate","cools"],g:-1},
+ {w:["While","the","chocolate","was","cooling","the","team","prepared","the","wrappers"],g:4},
+ {w:["She","had","already","tasted","the","sample","when","the","manager","arrived"],g:-1},
+ {w:["By","the","time","we","reached","the","shop","the","bars","had","sold","out"],g:6},
+ {w:["Until","the","chocolate","sets","we","cannot","wrap","it"],g:3}
+]);
+selList($("#tc2"),"tc2","Time clauses: tenses",[
+ ["When the cocoa beans {}, the workers will check them.",["arrive","will arrive"],"arrive"],
+ ["The brand launched the new bar after it {} the recipe.",["will change","had changed"],"had changed"],
+ ["I'll text you as soon as I {} to the shop.",["will get","get"],"get"],
+ ["By the time the visitors came, the factory {} the batch.",["finished","had finished"],"had finished"],
+ ["Call me the moment the chocolate {} ready.",["is","will be"],"is"],
+ ["No sooner had the shop opened {} the queue formed.",["than","when"],"than"],
+ ["While we {} for the delivery, we'll prepare the shelves.",["are waiting","will wait"],"are waiting"],
+ ["We won't sell the bars until the chocolate {} completely.",["has set","will set"],"has set"],
+ ["He had tried five brands before he {} his favourite.",["had found","found"],"found"],
+ ["Hardly had she tasted it {} she asked for more.",["when","than"],"when"],
+ ["As long as customers {} the bar, the brand will stay popular.",["will love","love"],"love"],
+ ["Whenever a customer {}, we replace the product.",["complains","will complain"],"complains"]
+]);
+builder($("#tc3"),"tc3","Time clauses: build the sentence",[
+ {p:"AS SOON AS: We will launch the bar. The factory finishes the batch.",w:["We","will","launch","the","bar","as","soon","as","the","factory","finishes","the","batch",",","will finish"],
+  a:["We will launch the bar as soon as the factory finishes the batch","As soon as the factory finishes the batch, we will launch the bar"]},
+ {p:"BY THE TIME: The shop opens. We will have unpacked all the boxes.",w:["By","the","time","the","shop","opens",",","we","will","have","unpacked","all","the","boxes","will open"],
+  a:["By the time the shop opens, we will have unpacked all the boxes","We will have unpacked all the boxes by the time the shop opens"]},
+ {p:"BEFORE: She tested the recipe. Then she changed the packaging.",w:["She","had","tested","the","recipe","before","she","changed","the","packaging",",","was"],
+  a:["She had tested the recipe before she changed the packaging","Before she changed the packaging, she had tested the recipe"]},
+ {p:"UNTIL: Don't unwrap the bar. It must cool first.",w:["Don't","unwrap","the","bar","until","it","has","cooled",",","will"],
+  a:["Don't unwrap the bar until it has cooled","Don't unwrap the bar until it cools","Until it has cooled, don't unwrap the bar","Until it cools, don't unwrap the bar"]},
+ {p:"WHILE: I was tasting the sample. The phone rang.",w:["While","I","was","tasting","the","sample",",","the","phone","rang","tasted"],
+  a:["While I was tasting the sample, the phone rang","The phone rang while I was tasting the sample"]}
+]);
+
+/* ---------- 4. PASSIVE RULES ---------- */
+var BB=[
+ ["Harvest","Cocoa pods are harvested by hand.","Farmers harvest the cocoa pods by hand."],
+ ["Ferment","The beans are taken out of the pods and fermented for several days.","Workers take the beans out of the pods and ferment them for several days."],
+ ["Dry","The beans are dried in the sun.","People dry the beans in the sun."],
+ ["Roast","At the factory, the beans are roasted and then cracked.","At the factory, machines roast the beans and then crack them."],
+ ["Grind","The cracked beans are ground into a thick paste.","Machines grind the cracked beans into a thick paste."],
+ ["Conche","Sugar and cocoa butter are added, and the mixture is conched for hours.","Workers add sugar and cocoa butter, and machines conche the mixture for hours."],
+ ["Temper","The chocolate is tempered: it is carefully heated and cooled.","Machines temper the chocolate: they carefully heat and cool it."],
+ ["Mould","It is poured into moulds and cooled.","Machines pour it into moulds and cool it."],
+ ["Wrap and ship","The bars are wrapped, packed in boxes and shipped to the shops.","Workers wrap the bars, pack them in boxes and ship them to the shops."]
+];
+(function(){
+  var cur=0,box=$("#bbSteps");
+  BB.forEach(function(s,i){var b=el("button","",String(i+1));b.type="button";b.setAttribute("aria-label","Step "+(i+1)+": "+s[0]);b.addEventListener("click",function(){go(i)});box.appendChild(b)});
+  function go(i){cur=i;$$("button",box).forEach(function(b,j){b.setAttribute("aria-pressed",String(i===j))});
+    $("#bbName").textContent="Step "+(i+1)+" · "+BB[i][0];$("#bbPas").textContent=BB[i][1];$("#bbAct").textContent="Active: "+BB[i][2];}
+  $("#bbToggle").addEventListener("click",function(){var a=$("#bbAct");a.hidden=!a.hidden;$("#bbToggle").textContent=a.hidden?"Show the active version":"Hide the active version"});
+  $("#bbNext").addEventListener("click",function(){go((cur+1)%BB.length)});
+  go(0);
+})();
+var PM=[
+ {s:"The factory",v:"roasted",o:"the beans",ps:"The beans",pv:"were roasted",ag:"by the factory",t:"Past simple",k:true},
+ {s:"Workers",v:"sort",o:"every bean",ps:"Every bean",pv:"is sorted",ag:"by workers",t:"Present simple",k:false},
+ {s:"The chef",v:"is tasting",o:"the new bar",ps:"The new bar",pv:"is being tasted",ag:"by the chef",t:"Present continuous",k:true},
+ {s:"The company",v:"has launched",o:"a vegan bar",ps:"A vegan bar",pv:"has been launched",ag:"by the company",t:"Present perfect",k:false},
+ {s:"The team",v:"was designing",o:"the wrapper",ps:"The wrapper",pv:"was being designed",ag:"by the team",t:"Past continuous",k:false},
+ {s:"They",v:"had already melted",o:"the cocoa butter",ps:"The cocoa butter",pv:"had already been melted",ag:"by them",t:"Past perfect",k:false},
+ {s:"The brand",v:"will announce",o:"the new flavour",ps:"The new flavour",pv:"will be announced",ag:"by the brand",t:"Future simple",k:true},
+ {s:"The company",v:"is going to close",o:"the old factory",ps:"The old factory",pv:"is going to be closed",ag:"by the company",t:"Be going to",k:false},
+ {s:"Someone",v:"must clean",o:"the machines",ps:"The machines",pv:"must be cleaned",ag:"by someone",t:"Modal verb",k:false},
+ {s:"They",v:"will have packed",o:"all the boxes",ps:"All the boxes",pv:"will have been packed",ag:"by them",t:"Future perfect",k:false}
+];
+(function(){
+  var i=0,step=0,box=$("#pmChips");
+  PM.forEach(function(p,j){var b=el("button","chip",p.t);b.type="button";b.setAttribute("aria-pressed",String(j===0));b.addEventListener("click",function(){i=j;step=0;$$("button",box).forEach(function(x,k){x.setAttribute("aria-pressed",String(k===j))});draw()});box.appendChild(b)});
+  function draw(){
+    var p=PM[i];
+    $("#pmAct").innerHTML="<span class='cs'>"+p.s+"</span> <span class='cv'>"+p.v+"</span> <span class='co'>"+p.o+"</span>.";
+    var h=[];
+    if(step>=1)h.push("<span class='co'>"+p.ps+"</span>");
+    if(step>=2)h.push("<span class='cv'>"+p.pv+"</span>");
+    if(step>=3)h.push(["Someone","They","Workers","Somebody"].indexOf(p.s)>-1?"<span class='small'>(by "+p.s.toLowerCase()+" is dropped)</span>":"<span class='cs'>"+p.ag+"</span>");
+    $("#pmPas").innerHTML=h.length?h.join(" ")+(step>=3?".":""):"…";
+    $("#pmNote").textContent=["Step 0: find the doer, the verb and the object.","Step 1: the object becomes the subject.","Step 2: use be in the same tense + past participle.","Step 3: add by + doer only if it matters. "+p.t+"."][step];
+  }
+  $("#pmNext").addEventListener("click",function(){step=Math.min(3,step+1);draw()});
+  $("#pmReset").addEventListener("click",function(){step=0;draw()});
+  draw();
+})();
+(function(){
+  var why=[
+   ["1. The doer is unknown, unimportant or obvious","A box of chocolates <mark class='pv'>was stolen</mark> yesterday. (unknown)<br>The wrappers <mark class='pv'>were printed</mark> last week. (unimportant)<br>The thieves <mark class='pv'>have been arrested</mark>. (obvious: by the police)"],
+   ["2. To sound more polite or formal","A mistake <mark class='pv'>has been made</mark> with your order. (more polite than: <em>We made a mistake</em>)"],
+   ["3. The action matters more than the doer: news, notices, instructions, processes, adverts","Photos <mark class='pv'>are not allowed</mark> in the factory. (notice)<br>The chocolate shop <mark class='pv'>was robbed</mark> this morning. (news)<br>The chocolate <mark class='pv'>is poured</mark> into moulds. (process)"],
+   ["4. To put emphasis on the doer","The wrapper <mark class='pv'>was designed</mark> by a famous artist."]
+  ];
+  $("#why").innerHTML=why.map(function(w){return "<details><summary>"+w[0]+"</summary><p>"+w[1]+"</p></details>"}).join("");
+  var notes=[
+   ["Only verbs with an object (transitive verbs)","They built that factory in 1905. → That factory <mark class='pv'>was built</mark> in 1905.<br>No passive: <em>happen, arrive, die, exist, appear</em> (and <em>have, suit, fit, resemble</em>). NOT: <s>The accident was happened.</s><br>In informal English <b>get</b> can replace <b>be</b> for accidents: <em>The bars <mark class='pv'>got damaged</mark> in transport.</em>"],
+   ["by + doer / with + instrument or material","by = who or what did the action: <em>The shop was opened <b>by</b> the mayor.</em><br>with = what was used: <em>The mould was filled <b>with</b> liquid chocolate. The cake was made <b>with</b> cocoa, butter and eggs.</em>"],
+   ["Leave out the doer when it adds no information","<em>Someone, people, they, I, you</em> are usually left out: <em>My wallet was taken (by someone).</em><br>Keep it when it is new information: <em>The slogan was written <b>by the founder</b>.</em>"],
+   ["Verbs with two objects","They gave him a free sample. → <em>He was given a free sample.</em> (more usual)<br>→ <em>A free sample was given to him.</em> (less usual)"],
+   ["make, hear, see, help","Active: bare infinitive. Passive: <b>to</b>-infinitive.<br>They made me taste it. → <em>I was made <b>to taste</b> it.</em>"],
+   ["Modal verbs","modal + <b>be</b> + past participle, or modal + <b>have been</b> + past participle:<br>They may close the shop. → <em>The shop may <mark class='pv'>be closed</mark>.</em><br>They may have recalled the batch. → <em>The batch may <mark class='pv'>have been recalled</mark>.</em>"],
+   ["Reporting verbs: believe, expect, know, report, say, think","People say the recipe is secret.<br>a) <b>It</b> + passive + <b>that</b>-clause: <em>It is said that the recipe is secret.</em><br>b) <b>Subject</b> + passive + <b>to</b>-infinitive: <em>The recipe is said to be secret.</em>"]
+  ];
+  $("#notes").innerHTML=notes.map(function(w){return "<details><summary>"+w[0]+"</summary><p>"+w[1]+"</p></details>"}).join("");
+  var facts=[
+   ["The Aztecs and Maya","Cocoa beans <mark class='pv'>were used</mark> as a kind of money in ancient Central America."],
+   ["Inside the pod","Cocoa beans are really seeds. They <mark class='pv'>are found</mark> inside large pods that grow directly on the tree."],
+   ["A Swiss idea","Milk chocolate <mark class='pv'>was first made</mark> in Switzerland in 1875."],
+   ["Patience in the factory","Fine chocolate <mark class='pv'>is</mark> often <mark class='pv'>conched</mark> for many hours to make it smooth."],
+   ["Where it grows","Cocoa trees <mark class='pv'>are grown</mark> in warm, wet regions near the equator, and the pods <mark class='pv'>are</mark> often <mark class='pv'>harvested</mark> by hand."]
+  ];
+  $("#facts").innerHTML=facts.map(function(w){return "<details><summary>"+w[0]+"</summary><p>"+w[1]+"</p></details>"}).join("");
+})();
+
+/* ---------- 5. PASSIVE PRACTICE ---------- */
+spotter($("#pa1"),"pa1","Passive: spot it",[
+ {t:"The beans are fermented for about a week.",p:true},
+ {t:"Farmers harvest the pods by hand.",p:false},
+ {t:"The chocolate was being tempered when the machine broke down.",p:true},
+ {t:"A new vegan bar has been launched.",p:true},
+ {t:"The company will announce the new flavour in spring.",p:false},
+ {t:"The new flavour will be announced in spring.",p:true},
+ {t:"They are opening a second factory next year.",p:false},
+ {t:"All bars must be checked before they are wrapped.",p:true},
+ {t:"The delivery arrived two days late.",p:false},
+ {t:"Mistakes were made, but they have been corrected.",p:true}
+]);
+selList($("#pa2"),"pa2","Passive: choose the form",[
+ ["The beans {} to the factory every week.",["are delivered","are delivering","delivered"],"are delivered"],
+ ["The new bar {} at the moment.",["is tested","is being tested","has tested"],"is being tested"],
+ ["The first factory {} in 1905.",["built","was built","has been built"],"was built"],
+ ["Three new flavours {} since January.",["have created","have been created","were created"],"have been created"],
+ ["By the time we arrived, all the bars {}.",["had been sold","had sold","were selling"],"had been sold"],
+ ["The winner {} on Friday.",["will announce","will be announced","will be announcing"],"will be announced"],
+ ["The wrappers {} before they leave the factory.",["must be checked","must check","must be checking"],"must be checked"],
+ ["The party {} because of the rain.",["cancelled","was cancelled","was cancelling"],"was cancelled"],
+ ["While the factory {}, production was stopped.",["was being cleaned","was cleaned","cleaned"],"was being cleaned"],
+ ["She doesn't like {} what to do.",["telling","being told","to tell"],"being told"],
+ ["The recipe is believed {} over a hundred years old.",["to be","being","be"],"to be"],
+ ["We need the wrappers {} by Monday.",["design","designed","designing"],"designed"]
+]);
+builder($("#pa3"),"pa3","Passive: build the sentence",[
+ {p:"The company recalled the batch.",w:["The","batch","was","recalled","by","the","company","were","has"],a:["The batch was recalled by the company","The batch was recalled"]},
+ {p:"They are building a new factory.",w:["A","new","factory","is","being","built","are","been"],a:["A new factory is being built"]},
+ {p:"Someone has eaten the samples.",w:["The","samples","have","been","eaten","has","was"],a:["The samples have been eaten"]},
+ {p:"The manager will sign the contract tomorrow.",w:["The","contract","will","be","signed","tomorrow","by","the","manager","is","being"],a:["The contract will be signed tomorrow","The contract will be signed by the manager tomorrow","The contract will be signed tomorrow by the manager"]},
+ {p:"The workers must check every bar.",w:["Every","bar","must","be","checked","by","the","workers","is","been"],a:["Every bar must be checked","Every bar must be checked by the workers"]},
+ {p:"Nobody had told us about the new recipe.",w:["We","had","not","been","told","about","the","new","recipe","hadn't","were"],a:["We had not been told about the new recipe","We hadn't been told about the new recipe"]},
+ {p:"Workers were cleaning the machines when we arrived.",w:["The","machines","were","being","cleaned","when","we","arrived","was","been"],a:["The machines were being cleaned when we arrived"]},
+ {p:"They will have packed all the boxes by noon.",w:["All","the","boxes","will","have","been","packed","by","noon","be","is"],a:["All the boxes will have been packed by noon"]}
+]);
+cloze($("#pa4"),"pa4","Passive: text (typed)",
+ "Chocolate has a long journey before it {1} (eat). First, the cocoa pods {2} (harvest) by hand, and the beans {3} (ferment) and dried in the sun. At the factory, the beans {4} (roast), cracked and ground into a thick paste. Right now, a new dark chocolate {5} (develop) by our team, and several recipes {6} (already / test). Last year, a milk chocolate bar {7} (launch) in twelve countries, and thousands of bars {8} (sell) in the first week. Once the chocolate {9} (temper), it must {10} (pour) into moulds. The bars {11} (wrap) and shipped as soon as they {12} (cool).",
+ [
+  {a:["is eaten"]},{a:["are harvested"]},{a:["are fermented"]},{a:["are roasted"]},{a:["is being developed"]},
+  {a:["have already been tested","have been tested already"]},{a:["was launched"]},{a:["were sold"]},
+  {a:["has been tempered","is tempered"]},{a:["be poured"]},{a:["are wrapped"]},{a:["have cooled","cool"]}
+ ],"typed");
+selList($("#pa5"),"pa5","Active or passive?",[
+ ["The accident {} at the factory yesterday.",["was happened","happened","has been happened"],"happened"],
+ ["A new brand ambassador {} to the press yesterday.",["introduced","was introduced","was introducing"],"was introduced"],
+ ["The first batch {} by Friday.",["will be finished","will finish","will have finish"],"will be finished"],
+ ["The company {} in 1920.",["founded","was founded","has founded"],"was founded"],
+ ["This flavour {} my favourite from childhood.",["resembles","is resembled","is resembling"],"resembles"],
+ ["Our brand {} from the competition by its packaging.",["differs","is differed","is differing"],"differs"],
+ ["I {} a free sample at the shop.",["was offered","offered","was offering"],"was offered"],
+ ["The new factory {} by the mayor next week.",["will open","will be opened","will be opening"],"will be opened"],
+ ["These bars {} in small batches.",["make","are made","are making"],"are made"],
+ ["The taste {} everybody.",["surprised","was surprised","was surprising"],"surprised"]
+]);
+typed($("#pa6"),"pa6","Passive: correct the mistake",[
+ {h:"The chocolate <u>was been melted</u> too early.",acc:["was melted"]},
+ {h:"The bars <u>are being wrapping</u> at the moment.",acc:["are being wrapped"]},
+ {h:"A new factory <u>has opened</u> by the company last year.",acc:["was opened","was opened by the company"]},
+ {h:"The wrappers <u>must be printing</u> before Friday.",acc:["must be printed","be printed"]},
+ {h:"The old machine <u>is replaced</u> at the moment.",acc:["is being replaced"]},
+ {h:"The new bar <u>will be launch</u> in March.",acc:["will be launched","be launched"]}
+]);
+selList($("#pa7"),"pa7","Passive with infinitive / gerund / make",[
+ ["She enjoys {} about new flavours.",["told","being told","to be told"],"being told"],
+ ["He doesn't want {} in public.",["to criticise","to be criticised","being criticised"],"to be criticised"],
+ ["All the bars are required {} before they leave the factory.",["to check","to be checked","checking"],"to be checked"],
+ ["I remember {} about the new recipe in March.",["to be told","being told","telling"],"being told"],
+ ["The staff avoid {} while they are working.",["disturbing","being disturbed","to be disturbed"],"being disturbed"],
+ ["She was delighted {} the job.",["offered","to be offered","being offered"],"to be offered"],
+ ["The staff were made {} the whole batch again.",["to repeat","repeat","repeating"],"to repeat"],
+ ["She was made {} the secret recipe.",["reveal","to reveal","revealing"],"to reveal"],
+ ["We were allowed {} the factory early.",["to leave","leave","leaving"],"to leave"]
+]);
+selList($("#pa8"),"pa8","Passive: level up",[
+ ["We {} the wrappers redesigned last week.",["had","have","were"],"had"],
+ ["I'm going to {} my kitchen painted.",["have","be","do"],"have"],
+ ["It {} that the recipe is a hundred years old.",["says","is said","said"],"is said"],
+ ["He {} to have invented the bar.",["believes","is believed","believed"],"is believed"],
+ ["The brand is said {} thousands of people.",["employing","to employ","to be employed"],"to employ"],
+ ["She had her coat {} yesterday.",["cleaned","clean","cleaning"],"cleaned"]
+]);
+
+selList($("#pa9"),"pa9","By or with?",[
+ ["The mould was filled {} liquid chocolate.",["by","with"],"with"],
+ ["The wrapper was designed {} a famous artist.",["by","with"],"by"],
+ ["The recipe was invented {} a young chocolatier.",["by","with"],"by"],
+ ["The bar was decorated {} gold leaf.",["by","with"],"with"],
+ ["The beans were stirred {} a wooden spoon.",["by","with"],"with"],
+ ["The shop was opened {} the mayor.",["by","with"],"by"],
+ ["The box was tied {} a red ribbon.",["by","with"],"with"],
+ ["The advert was filmed {} a team from Paris.",["by","with"],"by"],
+ ["The cake was made {} cocoa, butter and eggs.",["by","with"],"with"],
+ ["The logo was drawn {} the founder's daughter.",["by","with"],"by"]
+]);
+builder($("#pa10"),"pa10","Two ways (two objects)",[
+ {p:"They gave him a free sample. → He …",w:["He","was","given","a","free","sample","to","him","were","by"],a:["He was given a free sample"]},
+ {p:"→ A free sample …",w:["A","free","sample","was","given","to","him","he","by"],a:["A free sample was given to him"]},
+ {p:"They have offered her the job. → She …",w:["She","has","been","offered","the","job","to","her","have","by"],a:["She has been offered the job"]},
+ {p:"→ The job …",w:["The","job","has","been","offered","to","her","she","have"],a:["The job has been offered to her"]},
+ {p:"She will send you a catalogue. → You …",w:["You","will","be","sent","a","catalogue","to","are","been"],a:["You will be sent a catalogue"]},
+ {p:"→ A catalogue …",w:["A","catalogue","will","be","sent","to","you","been","are"],a:["A catalogue will be sent to you"]},
+ {p:"They are going to show us the new wrapper. → We …",w:["We","are","going","to","be","shown","the","new","wrapper","been","us"],a:["We are going to be shown the new wrapper"]},
+ {p:"→ The new wrapper …",w:["The","new","wrapper","is","going","to","be","shown","to","us","been"],a:["The new wrapper is going to be shown to us"]}
+]);
+typed($("#pa11"),"pa11","Reporting passives",[
+ {h:"People expect the new bar to sell well.<br><b>The new bar …</b>",acc:["is expected to sell well","The new bar is expected to sell well"]},
+ {h:"<b>It …</b>",acc:["is expected that the new bar will sell well","It is expected that the new bar will sell well"]},
+ {h:"Everyone knows that the brand is very old.<br><b>The brand …</b>",acc:["is known to be very old","The brand is known to be very old"]},
+ {h:"<b>It …</b>",acc:["is known that the brand is very old","It is known that the brand is very old"]},
+ {h:"Many people believe that dark chocolate is healthy.<br><b>Dark chocolate …</b>",acc:["is believed to be healthy","Dark chocolate is believed to be healthy"]},
+ {h:"<b>It …</b>",acc:["is believed that dark chocolate is healthy","It is believed that dark chocolate is healthy"]},
+ {h:"They say that the recipe is a secret.<br><b>The recipe …</b>",acc:["is said to be a secret","The recipe is said to be a secret"]},
+ {h:"<b>It …</b>",acc:["is said that the recipe is a secret","It is said that the recipe is a secret"]}
+]);
+typed($("#pa12"),"pa12","Past continuous / past perfect passive",[
+ {h:"They didn't open the shop until the shelves ______ (fill).",acc:["had been filled"]},
+ {h:"I couldn't go into the factory shop. It ______ (redecorate).",acc:["was being redecorated","was being redecorated"]},
+ {h:"The chocolatier ______ (interview) when the lights went out.",acc:["was being interviewed"]},
+ {h:"The missing recipe ______ (not / find) by the time the visit ended.",acc:["had not been found","hadn't been found"]},
+ {h:"I couldn't buy the limited edition bar because it ______ (already / sell).",acc:["had already been sold","had been sold already"]},
+ {h:"By the time the manager returned, the new packaging ______ (deliver).",acc:["had been delivered"]},
+ {h:"I didn't taste the new flavour because I ______ (not / invite) to the launch.",acc:["was not invited","wasn't invited"]}
+]);
+typed($("#pa14"),"pa14","Passive into active",[
+ {h:"The bar was invented by a young chocolatier.",acc:["A young chocolatier invented the bar"]},
+ {h:"She was employed by an international brand.",acc:["An international brand employed her"]},
+ {h:"This slogan was written by the founder.",acc:["The founder wrote this slogan"]},
+ {h:"The beans might have been damaged.",acc:["Somebody might have damaged the beans","Someone might have damaged the beans","They might have damaged the beans"]},
+ {h:"He has been sent a parcel.",acc:["Somebody has sent him a parcel","Someone has sent him a parcel","They have sent him a parcel"]},
+ {h:"The manager was seen to leave.",acc:["Somebody saw the manager leave","Someone saw the manager leave","They saw the manager leave","People saw the manager leave"]},
+ {h:"The new shop will be opened by the mayor.",acc:["The mayor will open the new shop"]},
+ {h:"It is hoped that sales will improve.",acc:["People hope that sales will improve","We hope that sales will improve","Everyone hopes that sales will improve"]}
+]);
+cloze($("#pa15"),"pa15","The old factory (typed)",
+ "There is an old chocolate factory in a small town which {1} (believe) {2} (haunt). It {3} (call) The Golden Bean, and it {4} (say) that the smell of chocolate can still {5} (smell) there at night. The factory {6} (build) over a hundred years ago and {7} (own) by a famous chocolatier who {8} (believe) to have hidden a secret recipe. One day he disappeared and he {9} (never / see) again. In 1990 the building {10} (buy) by a businesswoman and {11} (turn) into a museum. Every year the museum {12} (visit) by thousands of tourists, and special night tours {13} (organise) for them.",
+ [
+  {a:["is believed"]},{a:["be haunted"]},{a:["is called"]},{a:["is said"]},{a:["be smelled","be smelt"]},
+  {a:["was built"]},{a:["was owned"]},{a:["was believed"]},{a:["was never seen","was never seen again"]},
+  {a:["was bought"]},{a:["was turned","turned"]},{a:["is visited"]},{a:["are organised","are organized"]}
+ ],"typed");
+(function(){
+  var host=$("#pa13");
+  host.innerHTML="<p>Somebody left a mysterious box at the factory gate last night. A cleaner found it under a table. She gave it to the manager. Nobody knows where it came from. The staff are tasting the chocolates now. The police are searching for the sender because they have found a golden ticket inside. They hope they will find the person soon.</p>";
+  var ta=el("textarea");ta.rows=7;ta.id="pa13-text";ta.setAttribute("aria-label","Your passive version");host.appendChild(ta);
+  var b=el("button","btn ghost","Show model answer");b.style.marginTop="8px";
+  var m=el("div","model","A mysterious box was left at the factory gate last night. It was found under a table by a cleaner and given to the manager. It isn't known where it came from. The chocolates are being tasted by the staff now. The sender is being searched for by the police because a golden ticket has been found inside. It is hoped that the person will be found soon.");m.hidden=true;
+  b.addEventListener("click",function(){m.hidden=!m.hidden;b.textContent=m.hidden?"Show model answer":"Hide model answer"});
+  host.appendChild(b);host.appendChild(m);
+})();
+
+/* ---------- 6. MIXED ---------- */
+cloze($("#mx"),"mx","Mixed text",
+ "When our company decided {1} a new brand of dark chocolate, a lot of work had to be done. Before the first bar {2} on sale, the recipe {3} by a panel of tasters, and the wrapper {4} to look more modern. The team avoided {5} any final decisions until all the feedback {6}. While the machines {7}, the marketing department finished {8} the launch campaign. As soon as the first batch {9}, it {10} to the shops. The director said she was looking forward to {11} the first sales figures. By the time the year ends, more than a million bars {12}.",
+ [
+  {o:["to launch","launching","launch"],a:"to launch"},{o:["went","had gone","was going"],a:"went"},
+  {o:["was tested","tested","was testing"],a:"was tested"},{o:["was redesigned","redesigned","had redesigning"],a:"was redesigned"},
+  {o:["making","to make","make"],a:"making"},{o:["had arrived","will arrive","would arrive"],a:"had arrived"},
+  {o:["were being tested","tested","were testing"],a:"were being tested"},{o:["preparing","to prepare","prepare"],a:"preparing"},
+  {o:["was packed","packed","was packing"],a:"was packed"},{o:["was sent","sent","was sending"],a:"was sent"},
+  {o:["seeing","see","to see"],a:"seeing"},{o:["will have been sold","will have sold","will be selling"],a:"will have been sold"}
+ ],"sel");
+
+/* ---------- 7. SPEAK & WRITE ---------- */
+var TOPICS=["How a chocolate bar is made, from bean to shop","How a new chocolate flavour is created and tested","How a famous brand is built and advertised","How chocolate is packaged and delivered to supermarkets","How a new product is launched on the market","How a customer complaint about a product is handled"];
+(function(){
+  var box=$("#spChips");
+  TOPICS.forEach(function(t,i){var b=el("button","chip","Topic "+(i+1));b.type="button";b.setAttribute("aria-pressed",String(i===0));
+    b.addEventListener("click",function(){$$("button",box).forEach(function(x,k){x.setAttribute("aria-pressed",String(k===i))});$("#spTopic").textContent=t});box.appendChild(b)});
+  var r=el("button","chip","Random");r.type="button";r.addEventListener("click",function(){var i=Math.floor(Math.random()*TOPICS.length);$$("button",box)[i].click()});box.appendChild(r);
+  $("#spTopic").textContent=TOPICS[0];
+  var timers={};
+  function fmt(s){var m=Math.floor(s/60),x=s%60;return m+":"+(x<10?"0":"")+x}
+  $$("[data-t]").forEach(function(b){
+    var id=b.getAttribute("data-t"),S=parseInt(b.getAttribute("data-s"),10);timers[id]={s:S,h:null};
+    b.addEventListener("click",function(){var T=timers[id];if(T.h){clearInterval(T.h);T.h=null;return}if(T.s<=0)T.s=S;
+      T.h=setInterval(function(){T.s--;$("#"+id).textContent=T.s>0?fmt(T.s):"Time!";if(T.s<=0){clearInterval(T.h);T.h=null}},1000)});
+  });
+  $$("[data-r]").forEach(function(b){
+    var id=b.getAttribute("data-r"),S=parseInt(b.getAttribute("data-s"),10);
+    b.addEventListener("click",function(){var T=timers[id];if(T.h){clearInterval(T.h);T.h=null}T.s=S;$("#"+id).textContent=fmt(S)});
+  });
+})();
+var STOP=["open","often","even","then","when","seven","ten","eleven","children","women","between","green","again","golden","given name"];
+var PASS=/\b(?:am|is|are|was|were|be|been|being)\s+(?:(?:not|also|already|still|just|always|never|currently|recently|usually|carefully|then|often|first|later)\s+)*(\w+ed|\w+en|made|done|built|sent|held|paid|given|taken|known|told|found|seen|set|put|kept|left|lost|brought|bought|written|chosen|begun|shown|run|won|sold|met|read|spent|taught|thought|ground|cut|shut)\b/gi;
+var TIME=/\b(as soon as|by the time|no sooner|hardly|the moment|as long as|whenever|until|till|before|after|while|once|when)\b/gi;
+function wUpdate(){
+  var t=$("#wText").value,words=(t.trim().match(/\S+/g)||[]).length,ok=words>=100&&words<=130;
+  $("#wCount").textContent=words+" words (target 100–130)"+(ok?" ✓":"");
+  var ps=[],m;PASS.lastIndex=0;
+  while((m=PASS.exec(t))){if(STOP.indexOf(m[1].toLowerCase())<0)ps.push(m[0])}
+  var tm=t.match(TIME)||[];
+  $("#wReport").innerHTML="<p><span class='pill"+(ps.length>=4?" used":"")+"'>Passive forms found: "+ps.length+" / 4</span><span class='pill"+(tm.length>=3?" used":"")+"'>Time words found: "+tm.length+" / 3</span></p>"+(ps.length?"<p class='small'>Passives: "+ps.slice(0,10).join(" · ")+"</p>":"");
+  sset("pdraft",t);
+}
+$("#wText").addEventListener("input",wUpdate);
+$("#wText").value=sget("pdraft")||"";wUpdate();
+$("#wCopy").addEventListener("click",function(){
+  var ta=$("#wText"),b=$("#wCopy");function done(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy text"},1500)}
+  try{navigator.clipboard.writeText(ta.value).then(done,function(){ta.select();b.textContent="Select and copy (Ctrl+C)"})}catch(e){ta.select();b.textContent="Select and copy (Ctrl+C)"}
+});
+
+/* ---------- INIT ---------- */
+var st=parseInt(sget("ptab")||"0",10);show(isNaN(st)||st>=panels.length?0:st,false);
+refresh();
+})();
+</script>
+</body></html>
